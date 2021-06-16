@@ -55,7 +55,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public void deleteRecipe(Long id) {
-        recipeRepository.deleteById(id);
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        if (optionalRecipe.isPresent()) {
+            recipeRepository.deleteById(id);
+        } else {
+            throw new RecordNotFoundException();
+        }
+
     }
 
     @Override
