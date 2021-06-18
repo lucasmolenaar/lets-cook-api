@@ -12,7 +12,7 @@ public interface UserService {
     Collection<User> getUsers();
     Optional<User> getUser(String username);
     boolean userExists(String username);
-    void createUser(User user);
+    String createUser(User user);
     void updateUser(String username, User user);
     void deleteUser(String username);
     Set<Authority> getAuthorities(String username);

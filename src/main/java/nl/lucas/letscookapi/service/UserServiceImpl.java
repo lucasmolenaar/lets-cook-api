@@ -46,10 +46,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(User user) {
+    public String createUser(User user) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         user.setApiKey(randomString);
-        userRepository.save(user);
+        User newUser = userRepository.save(user);
+        return newUser.getUsername();
     }
 
     @Override
