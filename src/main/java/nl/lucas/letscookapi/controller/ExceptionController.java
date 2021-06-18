@@ -3,6 +3,7 @@ package nl.lucas.letscookapi.controller;
 import nl.lucas.letscookapi.exception.BadRequestException;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 //import nl.lucas.letscookapi.exception.UsernameNotFoundException;
+import nl.lucas.letscookapi.exception.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,10 +27,10 @@ public class ExceptionController {
         return exception.getMessage();
     }
 
-//    @ResponseBody
-//    @ExceptionHandler(UsernameNotFoundException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public String UsernameNotFoundHandler(UsernameNotFoundException exception) {
-//        return exception.getMessage();
-//    }
+    @ResponseBody
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String UsernameNotFoundHandler(UsernameNotFoundException exception) {
+        return exception.getMessage();
+    }
 }
