@@ -1,5 +1,6 @@
 package nl.lucas.letscookapi;
 
+import nl.lucas.letscookapi.utils.RandomStringGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
