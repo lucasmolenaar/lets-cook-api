@@ -42,12 +42,26 @@ public class Recipe {
 
     public Recipe() {}
 
-    public Recipe(String name, int calories, int timeInMinutes, List<Ingredient> ingredients, List<Step> steps) {
+    public Recipe(Long id, String name, int calories, int timeInMinutes) {
+        this.id = id;
+        this.name = name;
+        this.calories = calories;
+        this.timeInMinutes = timeInMinutes;
+    }
+
+    public Recipe(String name, int calories, int timeInMinutes) {
+        this.name = name;
+        this.calories = calories;
+        this.timeInMinutes = timeInMinutes;
+    }
+
+    public Recipe(String name, int calories, int timeInMinutes, List<Ingredient> ingredients, List<Step> steps, List<Equipment> equipment) {
         this.name = name;
         this.calories = calories;
         this.timeInMinutes = timeInMinutes;
         this.ingredients = ingredients;
         this.steps = steps;
+        this.equipment = equipment;
     }
 
     public Long getId() {
@@ -120,5 +134,40 @@ public class Recipe {
 
     public void setRecipePicture(byte[] recipePicture) {
         this.recipePicture = recipePicture;
+    }
+
+    public static class Builder {
+        private String name;
+        private int calories;
+        private int timeInMinutes;
+        private List<Ingredient> ingredients;
+        private List<Step> steps;
+        private List<Equipment> equipment;
+
+        public Builder(String name, int calories, int timeInMinutes) {
+            this.name = name;
+            this.calories = calories;
+            this.timeInMinutes = timeInMinutes;
+        }
+
+        public Builder withIngredients(List<Ingredient> ingredients) {
+            this.ingredients = ingredients;
+            return this;
+        }
+
+        public Builder withSteps(List<Step> steps) {
+            this.steps = steps;
+            return this;
+        }
+
+        public Builder withEquipment(List<Equipment> equipment) {
+            this.equipment = equipment;
+            return this;
+        }
+
+        public Recipe build() {
+            return new Recipe(name, calories, timeInMinutes, ingredients, steps, equipment);
+        }
+
     }
 }

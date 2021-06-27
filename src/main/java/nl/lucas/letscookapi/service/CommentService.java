@@ -7,9 +7,7 @@ import java.util.List;
 public interface CommentService {
 
     List<Comment> findAllCommentsForRecipe(Long id);
-    //    Comment findCommentById(Long recipeId, Long commentId);
+    Comment findCommentById(Long recipeId, Long commentId);
     void createComment(Long recipeId, Comment comment);
-    void deleteComment(Long id);
-    void updateComment(Long id, Comment updatedComment);
-
+    void deleteComment(Long recipeId, Long commentId);
 }

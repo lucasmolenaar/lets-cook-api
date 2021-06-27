@@ -1,8 +1,8 @@
 package nl.lucas.letscookapi.utils;
 
 import com.lowagie.text.*;
-import com.lowagie.text.alignment.*;
 import com.lowagie.text.Font;
+import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import nl.lucas.letscookapi.model.Equipment;
@@ -106,12 +106,18 @@ public class RecipePdfExporter {
 
         PdfPTable stepsTable = new PdfPTable(2);
         stepsTable.setWidthPercentage(100f);
-        stepsTable.setWidths(new float[]{1f, 9f});
+        stepsTable.setWidths(new float[]{1f, 12f});
         stepsTable.setSpacingBefore(10);
         writeStepsTable(stepsTable);
         document.add(stepsTable);
 
-
+        // FOTO TOEVOEGEN (NOG TE GROOT, MOET KLEINER)
+//        document.add(new Image(Image.getInstance(recipe.getRecipePicture())) {
+//            @Override
+//            public byte[] getRawData() {
+//                return super.getRawData();
+//            }
+//        });
 
         document.close();
     }

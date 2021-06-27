@@ -33,22 +33,20 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
-//    @Override
-//    public Comment findCommentById(Long recipeId, Long commentId) {
-//        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
-//        Optional<Comment> optionalComment = commentRepository.findById(commentId);
-//
-//        if (optionalRecipe.isPresent()) {
-//            Recipe recipe = optionalRecipe.get();
-//            List<Comment> comments = recipe.getComments();
-//            for (int i = 0; i < comments.size(); i++) {
-//                if ()
-//            }
-//
-//        } else {
-//            throw new RecordNotFoundException();
-//        }
-//    }
+    @Override
+    public Comment findCommentById(Long recipeId, Long commentId) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+
+        if(optionalRecipe.isEmpty()) {
+            throw new RecordNotFoundException();
+        } else if (optionalComment.isEmpty()) {
+            throw new RecordNotFoundException();
+        }
+
+        return optionalComment.get();
+    }
+
 
     @Override
     public void createComment(Long recipeId, Comment comment) {
@@ -64,12 +62,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long id) {
+    public void deleteComment(Long recipeId, Long commentId) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
 
-    }
+        if (optionalRecipe.isEmpty()) {
+            throw new RecordNotFoundException();
+        } else if (optionalComment.isEmpty()) {
+            throw new RecordNotFoundException();
+        }
 
-    @Override
-    public void updateComment(Long id, Comment updatedComment) {
-
+        commentRepository.deleteById(commentId);
     }
 }
