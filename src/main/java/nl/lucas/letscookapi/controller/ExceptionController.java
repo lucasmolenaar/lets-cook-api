@@ -1,6 +1,7 @@
 package nl.lucas.letscookapi.controller;
 
 import nl.lucas.letscookapi.exception.BadRequestException;
+import nl.lucas.letscookapi.exception.FileStorageException;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 //import nl.lucas.letscookapi.exception.UsernameNotFoundException;
 import nl.lucas.letscookapi.exception.UsernameNotFoundException;
@@ -31,6 +32,13 @@ public class ExceptionController {
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String UsernameNotFoundHandler(UsernameNotFoundException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(FileStorageException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String FileStorageHandler(FileStorageException exception) {
         return exception.getMessage();
     }
 }

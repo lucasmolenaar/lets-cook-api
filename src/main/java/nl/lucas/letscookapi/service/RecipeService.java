@@ -14,5 +14,6 @@ public interface RecipeService {
     void createRecipe(Recipe recipe);
     void deleteRecipe(Long id);
     void updateRecipe(Long id, Recipe updatedRecipe);
+//    void uploadPicture(MultipartFile file); //andere manier van fileupload, lukt nog niet
     void uploadPicture(Long id, MultipartFile file) throws IOException;
 }

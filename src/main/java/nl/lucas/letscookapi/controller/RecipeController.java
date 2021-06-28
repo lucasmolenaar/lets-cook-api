@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -59,6 +60,18 @@ public class RecipeController {
         recipeService.updateRecipe(id, updatedRecipe);
         return ResponseEntity.noContent().build();
     }
+
+    /*
+    Hieronder andere manier van fileupload, lukt nog niet
+     */
+//    @PostMapping("/{recipeId}/image")
+//    public String uploadImage(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+//        recipeService.uploadPicture(file);
+//
+//        redirectAttributes.addFlashAttribute("message", "You successfully upload " + file.getOriginalFilename() + ".");
+//
+//        return "redirect:/";
+//    }
 
     @PostMapping("{recipeId}/image")
     public ResponseEntity<Object> uploadPicture(@PathVariable("recipeId") Long id, @RequestParam("file") MultipartFile file) throws IOException {

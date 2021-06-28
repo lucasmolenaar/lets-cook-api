@@ -1,18 +1,29 @@
 package nl.lucas.letscookapi.service;
 
+import nl.lucas.letscookapi.exception.FileStorageException;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
+
+//    @Value("${app.upload.dir:${user.home}}")
+//    public String uploadDir;
 
     private final RecipeRepository recipeRepository;
 
@@ -80,6 +91,20 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RecordNotFoundException();
         }
     }
+
+    /*
+    Hieronder andere manier van fileupload, lukt nog niet
+     */
+//
+//    public void uploadPicture(MultipartFile file) {
+//        try {
+//            Path copyLocation = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+//            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new FileStorageException("Could not store file " + file.getOriginalFilename() + ". Please try again.");
+//        }
+//    }
 
     @Override
     public void uploadPicture(Long id, MultipartFile file) throws IOException {

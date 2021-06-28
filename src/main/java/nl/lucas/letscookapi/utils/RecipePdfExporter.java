@@ -3,6 +3,7 @@ package nl.lucas.letscookapi.utils;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
+import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import nl.lucas.letscookapi.model.Equipment;
@@ -27,23 +28,38 @@ public class RecipePdfExporter {
     private void writeIngredientsTable(PdfPTable table) {
         List<Ingredient> ingredientsList = recipe.getIngredients();
         for (Ingredient ingredient : ingredientsList) {
-            table.addCell(ingredient.getName());
-            table.addCell(String.valueOf(ingredient.getWeightInGrams() + " gram"));
+            PdfPCell cellName = new PdfPCell(new Paragraph(ingredient.getName()));
+            PdfPCell cellGrams = new PdfPCell(new Paragraph(String.valueOf(ingredient.getWeightInGrams() + " gram")));
+            cellName.setBorderWidth(0f);
+            cellGrams.setBorderWidth(0f);
+            table.addCell(cellName);
+            table.addCell(cellGrams);
+//            table.addCell(ingredient.getName());
+//            table.addCell(String.valueOf(ingredient.getWeightInGrams() + " gram"));
         }
     }
 
     private void writeEquipmentTable(PdfPTable table) {
         List<Equipment> equipmentList = recipe.getEquipment();
         for (Equipment equipment : equipmentList) {
-            table.addCell(equipment.getName());
+            PdfPCell cellName = new PdfPCell(new Paragraph(equipment.getName()));
+            cellName.setBorderWidth(0f);
+            table.addCell(cellName);
+//            table.addCell(equipment.getName());
         }
     }
 
     private void writeStepsTable(PdfPTable table) {
         List<Step> stepsList = recipe.getSteps();
         for (Step step : stepsList) {
-            table.addCell(String.valueOf(step.getStepCount()));
-            table.addCell(step.getDescription());
+            PdfPCell cellCount = new PdfPCell(new Paragraph(String.valueOf(step.getStepCount())));
+            PdfPCell cellDesc = new PdfPCell(new Paragraph(step.getDescription()));
+            cellCount.setBorderWidth(0f);
+            cellDesc.setBorderWidth(0f);
+            table.addCell(cellCount);
+            table.addCell(cellDesc);
+//            table.addCell(String.valueOf(step.getStepCount()));
+//            table.addCell(step.getDescription());
         }
     }
 
@@ -62,7 +78,7 @@ public class RecipePdfExporter {
         recipeTitle.setAlignment(Paragraph.ALIGN_LEFT);
         document.add(recipeTitle);
 
-        font = FontFactory.getFont(FontFactory.HELVETICA);
+        font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
         font.setSize(12);
         font.setColor(Color.BLACK);
 
@@ -77,7 +93,7 @@ public class RecipePdfExporter {
 
         //INGREDIËNTEN
         Paragraph ingredientsTile = new Paragraph("Dit zijn de ingrediënten: ", font);
-        ingredientsTile.setSpacingBefore(10);
+        ingredientsTile.setSpacingBefore(20);
         document.add(ingredientsTile);
 
         PdfPTable ingredientsTable = new PdfPTable(2);
@@ -89,7 +105,7 @@ public class RecipePdfExporter {
 
         //BENODIGDHEDEN
         Paragraph equipmentTitle = new Paragraph("Dit zijn de benodigdheden: ", font);
-        equipmentTitle.setSpacingBefore(10);
+        equipmentTitle.setSpacingBefore(20);
         document.add(equipmentTitle);
 
         PdfPTable equipmentTable = new PdfPTable(1);
@@ -101,7 +117,7 @@ public class RecipePdfExporter {
 
         //STAPPEN
         Paragraph stepsTitle = new Paragraph("Dit zijn de stappen: ", font);
-        stepsTitle.setSpacingBefore(10);
+        stepsTitle.setSpacingBefore(20);
         document.add(stepsTitle);
 
         PdfPTable stepsTable = new PdfPTable(2);
@@ -111,7 +127,7 @@ public class RecipePdfExporter {
         writeStepsTable(stepsTable);
         document.add(stepsTable);
 
-        // FOTO TOEVOEGEN (NOG TE GROOT, MOET KLEINER)
+////         FOTO TOEVOEGEN (NOG TE GROOT, MOET KLEINER)
 //        document.add(new Image(Image.getInstance(recipe.getRecipePicture())) {
 //            @Override
 //            public byte[] getRawData() {

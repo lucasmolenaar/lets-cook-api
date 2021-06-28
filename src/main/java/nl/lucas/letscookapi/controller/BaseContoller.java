@@ -10,6 +10,6 @@ public class BaseContoller {
 
     @GetMapping
     public String hello() {
-        return "Hello world!";
+        return "Endpoint: POST /file-upload";
     }
 }
