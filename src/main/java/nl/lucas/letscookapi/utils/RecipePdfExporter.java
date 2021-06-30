@@ -34,8 +34,6 @@ public class RecipePdfExporter {
             cellGrams.setBorderWidth(0f);
             table.addCell(cellName);
             table.addCell(cellGrams);
-//            table.addCell(ingredient.getName());
-//            table.addCell(String.valueOf(ingredient.getWeightInGrams() + " gram"));
         }
     }
 
@@ -45,7 +43,6 @@ public class RecipePdfExporter {
             PdfPCell cellName = new PdfPCell(new Paragraph(equipment.getName()));
             cellName.setBorderWidth(0f);
             table.addCell(cellName);
-//            table.addCell(equipment.getName());
         }
     }
 
@@ -58,8 +55,6 @@ public class RecipePdfExporter {
             cellDesc.setBorderWidth(0f);
             table.addCell(cellCount);
             table.addCell(cellDesc);
-//            table.addCell(String.valueOf(step.getStepCount()));
-//            table.addCell(step.getDescription());
         }
     }
 
@@ -104,7 +99,7 @@ public class RecipePdfExporter {
         document.add(ingredientsTable);
 
         //BENODIGDHEDEN
-        Paragraph equipmentTitle = new Paragraph("Dit zijn de benodigdheden: ", font);
+        Paragraph equipmentTitle = new Paragraph("Verder heb je nodig: ", font);
         equipmentTitle.setSpacingBefore(20);
         document.add(equipmentTitle);
 
@@ -116,7 +111,7 @@ public class RecipePdfExporter {
         document.add(equipmentTable);
 
         //STAPPEN
-        Paragraph stepsTitle = new Paragraph("Dit zijn de stappen: ", font);
+        Paragraph stepsTitle = new Paragraph("Bereidingswijze: ", font);
         stepsTitle.setSpacingBefore(20);
         document.add(stepsTitle);
 
@@ -127,13 +122,16 @@ public class RecipePdfExporter {
         writeStepsTable(stepsTable);
         document.add(stepsTable);
 
-////         FOTO TOEVOEGEN (NOG TE GROOT, MOET KLEINER)
-//        document.add(new Image(Image.getInstance(recipe.getRecipePicture())) {
-//            @Override
-//            public byte[] getRawData() {
-//                return super.getRawData();
-//            }
-//        });
+        //FOTO
+        try {
+            byte[] imageBytes = recipe.getRecipeImage();
+            Image recipeImage = Image.getInstance(imageBytes);
+            recipeImage.setAbsolutePosition(100, 100);
+            recipeImage.scalePercent(50);
+            document.add(recipeImage);
+        } catch (Exception e) {
+            System.out.println("Could not find image");
+        }
 
         document.close();
     }

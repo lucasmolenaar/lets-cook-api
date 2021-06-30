@@ -1,6 +1,5 @@
 package nl.lucas.letscookapi.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -34,7 +33,7 @@ public class Recipe {
     private List<Comment> comments;
 
     @Lob
-    private byte[] recipePicture;
+    private byte[] recipeImage;
 
 //    @ManyToOne
 //    @JsonBackReference
@@ -128,12 +127,12 @@ public class Recipe {
         this.comments = comments;
     }
 
-    public byte[] getRecipePicture() {
-        return recipePicture;
+    public byte[] getRecipeImage() {
+        return recipeImage;
     }
 
-    public void setRecipePicture(byte[] recipePicture) {
-        this.recipePicture = recipePicture;
+    public void setRecipeImage(byte[] recipePicture) {
+        this.recipeImage = recipePicture;
     }
 
     public static class Builder {

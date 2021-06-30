@@ -3,7 +3,6 @@ package nl.lucas.letscookapi.service;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 import nl.lucas.letscookapi.model.*;
 import nl.lucas.letscookapi.repository.RecipeRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -16,7 +15,6 @@ import org.mockito.quality.Strictness;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +22,6 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -158,7 +155,7 @@ public class RecipeServiceTest {
         recipe.setComments(new ArrayList<Comment>());
         recipe.setIngredients(new ArrayList<Ingredient>());
         recipe.setSteps(new ArrayList<Step>());
-        recipe.setRecipePicture("AAAAAAAA".getBytes("UTF-8"));
+        recipe.setRecipeImage("AAAAAAAA".getBytes("UTF-8"));
         recipe.setEquipment(new ArrayList<Equipment>());
         Optional<Recipe> ofResult = Optional.<Recipe>of(recipe);
 
@@ -166,12 +163,12 @@ public class RecipeServiceTest {
         recipe1.setComments(new ArrayList<Comment>());
         recipe1.setIngredients(new ArrayList<Ingredient>());
         recipe1.setSteps(new ArrayList<Step>());
-        recipe1.setRecipePicture("AAAAAAAA".getBytes("UTF-8"));
+        recipe1.setRecipeImage("AAAAAAAA".getBytes("UTF-8"));
         recipe1.setEquipment(new ArrayList<Equipment>());
 
         when(this.recipeRepository.save((Recipe) any())).thenReturn(recipe1);
         when(this.recipeRepository.findById((Long) any())).thenReturn(ofResult);
-        this.recipeService.uploadPicture(123L,
+        this.recipeService.uploadImage(123L,
                 new MockMultipartFile("Name", "AAAAAAAAAAAAAAAAAAAAAAAA".getBytes("UTF-8")));
         verify(this.recipeRepository).findById((Long) any());
         verify(this.recipeRepository).save((Recipe) any());
@@ -184,12 +181,12 @@ public class RecipeServiceTest {
         recipe.setComments(new ArrayList<Comment>());
         recipe.setIngredients(new ArrayList<Ingredient>());
         recipe.setSteps(new ArrayList<Step>());
-        recipe.setRecipePicture("AAAAAAAA".getBytes("UTF-8"));
+        recipe.setRecipeImage("AAAAAAAA".getBytes("UTF-8"));
         recipe.setEquipment(new ArrayList<Equipment>());
 
         when(this.recipeRepository.save((Recipe) any())).thenReturn(recipe);
         when(this.recipeRepository.findById((Long) any())).thenReturn(Optional.<Recipe>empty());
-        assertThrows(RecordNotFoundException.class, () -> this.recipeService.uploadPicture(1L,
+        assertThrows(RecordNotFoundException.class, () -> this.recipeService.uploadImage(1L,
                 new MockMultipartFile("Name", "AAAAAAAAAAAAAAAAAAAAAAAA".getBytes("UTF-8"))));
         verify(this.recipeRepository).findById((Long) any());
     }

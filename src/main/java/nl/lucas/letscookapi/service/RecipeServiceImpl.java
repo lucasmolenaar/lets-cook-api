@@ -1,21 +1,13 @@
 package nl.lucas.letscookapi.service;
 
-import nl.lucas.letscookapi.exception.FileStorageException;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,12 +99,12 @@ public class RecipeServiceImpl implements RecipeService {
 //    }
 
     @Override
-    public void uploadPicture(Long id, MultipartFile file) throws IOException {
+    public void uploadImage(Long id, MultipartFile file) throws IOException {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            recipe.setRecipePicture(file.getBytes());
+            recipe.setRecipeImage(file.getBytes());
             recipeRepository.save(recipe);
         } else {
             throw new RecordNotFoundException();
