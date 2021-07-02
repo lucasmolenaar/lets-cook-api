@@ -1,11 +1,16 @@
 package nl.lucas.letscookapi.controller;
 
 import nl.lucas.letscookapi.payload.AuthenticationRequest;
+import nl.lucas.letscookapi.payload.AuthenticationResponse;
 import nl.lucas.letscookapi.service.CustomUserDetailsService;
+import nl.lucas.letscookapi.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -34,8 +39,16 @@ public class AuthenticationController {
         String password = authenticationRequest.getPassword();
 
         try {
-            authenticationManager
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username of password", e);
         }
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        final String jwt = jwtUtil.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
 
     }
 }
