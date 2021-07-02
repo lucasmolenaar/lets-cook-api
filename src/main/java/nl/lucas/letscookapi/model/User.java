@@ -21,7 +21,7 @@ public class User {
     @Column
     private String apiKey;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
     @OneToMany(targetEntity = Authority.class, mappedBy = "username", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -69,6 +69,10 @@ public class User {
 
     public Set<Authority> getAuthorities() {
         return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public void addAuthority(Authority authority) {

@@ -6,9 +6,11 @@ import nl.lucas.letscookapi.repository.UserRepository;
 import nl.lucas.letscookapi.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,6 +24,8 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Collection<User> getUsers() {
@@ -48,8 +52,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public String createUser(User user) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        user.setApiKey(randomString);
-        User newUser = userRepository.save(user);
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+
+        //standard authority
+        Authority standardAuthoritiy = new Authority(user.getUsername(), "ROLE_USER");
+        Set<Authority> standardAuthorities = new HashSet<>();
+        standardAuthorities.add(standardAuthoritiy);
+
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(encodedPassword);
+        newUser.setEmail(user.getEmail());
+        newUser.setEnabled(true);
+        newUser.setApiKey(randomString);
+        newUser.setAuthorities(standardAuthorities);
+
+        userRepository.save(newUser);
+
         return newUser.getUsername();
     }
 
