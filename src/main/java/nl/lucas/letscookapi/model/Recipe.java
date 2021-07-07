@@ -46,6 +46,7 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "owner")
     @JsonIgnoreProperties("recipes")
+    @JsonBackReference
     private User owner;
 
     public Recipe() {}

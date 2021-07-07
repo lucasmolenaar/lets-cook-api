@@ -131,14 +131,14 @@ public class UserServiceImpl implements UserService {
 
 
     //NOG NIET WERKEND
-//    @Override
-//    public List<Recipe> getOwnedRecipes(String username) {
-//        Optional<User> optionalUser = userRepository.findById(username);
-//        if (optionalUser.isPresent()) {
-//            User user = optionalUser.get();
-//            return user.getOwnedRecipes();
-//        } else {
-//            throw new UsernameNotFoundException(username);
-//        }
-//    }
+    @Override
+    public List<Recipe> getOwnedRecipes(String username) {
+        Optional<User> optionalUser = userRepository.findById(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return user.getOwnedRecipes();
+        } else {
+            throw new UsernameNotFoundException(username);
+        }
+    }
 }

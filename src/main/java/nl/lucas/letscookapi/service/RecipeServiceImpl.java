@@ -63,6 +63,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public void createRecipe(Recipe recipe) {
         recipe.setOwner(getAuthenticatedUser());
+        getAuthenticatedUser().addOwnedRecipe(recipe);
         recipeRepository.save(recipe);
     }
 

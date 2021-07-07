@@ -31,6 +31,7 @@ public class User {
     private Set<Authority> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
     private List<Recipe> ownedRecipes;
 
     public String getUsername() {
@@ -89,15 +90,15 @@ public class User {
         this.authorities.remove(authority);
     }
 
-//    public void addOwnedRecipe(Recipe recipe) {
-//        ownedRecipes.add(recipe);
-//    }
-//
-//    public List<Recipe> getOwnedRecipes() {
-//        return ownedRecipes;
-//    }
-//
-//    public void setOwnedRecipes(List<Recipe> ownedRecipes) {
-//        this.ownedRecipes = ownedRecipes;
-//    }
+    public void addOwnedRecipe(Recipe recipe) {
+        ownedRecipes.add(recipe);
+    }
+
+    public List<Recipe> getOwnedRecipes() {
+        return ownedRecipes;
+    }
+
+    public void setOwnedRecipes(List<Recipe> ownedRecipes) {
+        this.ownedRecipes = ownedRecipes;
+    }
 }

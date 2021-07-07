@@ -20,6 +20,6 @@ public interface UserService {
     Set<Authority> getAuthorities(String username);
     void addAuthority(String username, String authority);
     void removeAuthority(String username, String authority);
-//    List<Recipe> getOwnedRecipes(String username);
+    List<Recipe> getOwnedRecipes(String username);
 
 }
