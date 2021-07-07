@@ -1,11 +1,18 @@
 package nl.lucas.letscookapi.service;
 
+import nl.lucas.letscookapi.exception.ForbiddenException;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 import nl.lucas.letscookapi.model.Comment;
 import nl.lucas.letscookapi.model.Recipe;
+import nl.lucas.letscookapi.model.User;
 import nl.lucas.letscookapi.repository.CommentRepository;
 import nl.lucas.letscookapi.repository.RecipeRepository;
+import nl.lucas.letscookapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +23,13 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final RecipeRepository recipeRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, RecipeRepository recipeRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, RecipeRepository recipeRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.recipeRepository = recipeRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -72,6 +81,19 @@ public class CommentServiceImpl implements CommentService {
             throw new RecordNotFoundException();
         }
 
+        //hier moet ook nog bij, if owner comment == auth.user
+        if(!optionalRecipe.get().getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
         commentRepository.deleteById(commentId);
+    }
+
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
+            String username = userPrincipal.getUsername();
+            return userRepository.findById(username).orElse(null);
+        } else {
+            return null;
+        }
     }
 }

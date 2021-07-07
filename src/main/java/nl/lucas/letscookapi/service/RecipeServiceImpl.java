@@ -38,13 +38,12 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    @PostAuthorize("returnObject.owner.username == authentication.name")
+    //DEZE POSTAUTHORIZE KLOPT, MAAR IS HIER NIET NODIG
+//    @PostAuthorize("returnObject.owner.username == authentication.name")
     public Recipe findRecipeById(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get();
-            if (!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
-            return recipe;
+            return optionalRecipe.get();
         } else {
             throw new RecordNotFoundException();
         }
@@ -68,7 +67,6 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    //POST AUTHORIZE IS HIER NIET NODIG
     public void deleteRecipe(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 
@@ -109,6 +107,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
+            if(!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
             recipe.setRecipeImage(file.getBytes());
             recipeRepository.save(recipe);
         } else {

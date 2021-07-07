@@ -1,6 +1,7 @@
 package nl.lucas.letscookapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -17,6 +18,11 @@ public class Comment {
     @ManyToOne
     @JsonBackReference
     private Recipe recipe;
+
+//    @ManyToOne
+//    @JoinColumn(name = "owner")
+//    @JsonIgnoreProperties("comments")
+//    private User owner;
 
     public Long getId() {
         return id;
@@ -49,4 +55,12 @@ public class Comment {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
+//
+//    public User getOwner() {
+//        return owner;
+//    }
+//
+//    public void setOwner(User owner) {
+//        this.owner = owner;
+//    }
 }

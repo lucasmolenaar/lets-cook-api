@@ -65,6 +65,7 @@ public class RecipeController {
     }
 
     @PostMapping("{recipeId}/image")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Object> uploadImage(@PathVariable("recipeId") Long id, @RequestParam("file") MultipartFile file) throws IOException {
         if (file.getContentType() == null || !file.getContentType().equals("image/jpeg")) {
             throw new BadRequestException();
