@@ -1,24 +1,19 @@
 package nl.lucas.letscookapi.controller;
 
 import nl.lucas.letscookapi.model.Comment;
-import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.service.CommentService;
-import nl.lucas.letscookapi.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/recipes")
 public class CommentController {
 
-    private final RecipeService recipeService;
     private final CommentService commentService;
 
     @Autowired
-    public CommentController(RecipeService recipeService, CommentService commentService) {
-        this.recipeService = recipeService;
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
@@ -26,10 +21,6 @@ public class CommentController {
     public ResponseEntity<Object> getComments(@PathVariable("recipeId") Long id) {
         return ResponseEntity.ok().body(commentService.findAllCommentsForRecipe(id));
     }
-
-    /*
-    Onderstaande functie krijg ik nog niet werkend
-     */
 
     @GetMapping("/{recipeId}/comments/{commentId}")
     public ResponseEntity<Object> getCommentById(@PathVariable("recipeId") Long recipeId, @PathVariable("commentId") Long commentId) {

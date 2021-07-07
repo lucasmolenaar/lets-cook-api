@@ -1,6 +1,8 @@
 package nl.lucas.letscookapi.service;
 
+import nl.lucas.letscookapi.exception.BadRequestException;
 import nl.lucas.letscookapi.model.Authority;
+import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.model.User;
 import nl.lucas.letscookapi.repository.UserRepository;
 import nl.lucas.letscookapi.utils.RandomStringGenerator;
@@ -9,10 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -78,8 +77,11 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(username);
         }
 
+        String encodedPassword = passwordEncoder.encode(updatedUser.getPassword());
+
         User user = userRepository.findById(username).get();
-        user.setPassword(updatedUser.getPassword());
+        user.setPassword(encodedPassword);
+        user.setEmail(updatedUser.getEmail());
         userRepository.save(user);
     }
 
@@ -117,10 +119,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeAuthority(String username, String authority) {
+        //Check if username exists and if authority is valid
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        if (!authority.equals("ROLE_ADMIN") && !authority.equals("ROLE_USER")) throw new BadRequestException();
+
         User user = userRepository.findById(username).get();
         Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
         user.removeAuthority(authorityToRemove);
         userRepository.save(user);
     }
+
+
+    //NOG NIET WERKEND
+//    @Override
+//    public List<Recipe> getOwnedRecipes(String username) {
+//        Optional<User> optionalUser = userRepository.findById(username);
+//        if (optionalUser.isPresent()) {
+//            User user = optionalUser.get();
+//            return user.getOwnedRecipes();
+//        } else {
+//            throw new UsernameNotFoundException(username);
+//        }
+//    }
 }

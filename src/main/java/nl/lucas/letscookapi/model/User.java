@@ -1,7 +1,10 @@
 package nl.lucas.letscookapi.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,6 +29,9 @@ public class User {
 
     @OneToMany(targetEntity = Authority.class, mappedBy = "username", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
+
+    @OneToMany(mappedBy = "owner")
+    private List<Recipe> ownedRecipes;
 
     public String getUsername() {
         return username;
@@ -82,4 +88,16 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
+
+//    public void addOwnedRecipe(Recipe recipe) {
+//        ownedRecipes.add(recipe);
+//    }
+//
+//    public List<Recipe> getOwnedRecipes() {
+//        return ownedRecipes;
+//    }
+//
+//    public void setOwnedRecipes(List<Recipe> ownedRecipes) {
+//        this.ownedRecipes = ownedRecipes;
+//    }
 }

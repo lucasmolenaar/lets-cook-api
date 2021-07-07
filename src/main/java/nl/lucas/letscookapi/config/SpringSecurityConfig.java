@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +21,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -52,7 +54,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/register").permitAll()
                 .antMatchers(HttpMethod.GET, "/base/**").hasRole("USER")
-                .antMatchers("/recipes/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET,"/recipes/**").permitAll()
+//                .antMatchers("/recipes/**").hasRole("USER")
+//                .antMatchers(HttpMethod.DELETE,"/comments/**").hasRole("ADMIN")
+//                .antMatchers("/recipes/{\\d+}/comments/**").hasRole("USER")
+//                .mvcMatchers("/recipes/{name}/comments").hasRole("USER")
+//                .antMatchers("/recipes/1/comments/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/authenticated/**").authenticated()

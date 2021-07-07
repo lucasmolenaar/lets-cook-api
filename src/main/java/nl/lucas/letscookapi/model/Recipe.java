@@ -1,5 +1,7 @@
 package nl.lucas.letscookapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -12,8 +14,14 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private int calories;
+
+    @Column
     private int timeInMinutes;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -35,9 +43,10 @@ public class Recipe {
     @Lob
     private byte[] recipeImage;
 
-//    @ManyToOne
-//    @JsonBackReference
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "owner")
+    @JsonIgnoreProperties("recipes")
+    private User owner;
 
     public Recipe() {}
 
@@ -133,6 +142,14 @@ public class Recipe {
 
     public void setRecipeImage(byte[] recipePicture) {
         this.recipeImage = recipePicture;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public static class Builder {

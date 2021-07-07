@@ -1,6 +1,7 @@
 package nl.lucas.letscookapi.controller;
 
 import nl.lucas.letscookapi.exception.BadRequestException;
+import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.model.User;
 import nl.lucas.letscookapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,6 +33,11 @@ public class UserController {
     public ResponseEntity<Object> getUser(@PathVariable("username") String username) {
         return ResponseEntity.ok().body(userService.getUser(username));
     }
+
+//    @GetMapping("{username}/recipes")
+//    public List<Recipe> getOwnedRecipes(@PathVariable("username") String username) {
+//        return userService.getOwnedRecipes(username);
+//    }
 
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody User user) {

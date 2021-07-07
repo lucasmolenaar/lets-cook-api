@@ -1,9 +1,17 @@
 package nl.lucas.letscookapi.service;
 
+import nl.lucas.letscookapi.exception.BadRequestException;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 import nl.lucas.letscookapi.model.Recipe;
+import nl.lucas.letscookapi.model.User;
 import nl.lucas.letscookapi.repository.RecipeRepository;
+import nl.lucas.letscookapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,10 +26,13 @@ public class RecipeServiceImpl implements RecipeService {
 //    public String uploadDir;
 
     private final RecipeRepository recipeRepository;
+    private final UserRepository userRepository;
+
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, UserRepository userRepository) {
         this.recipeRepository = recipeRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,11 +41,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @PostAuthorize("returnObject.owner.username == authentication.name")
     public Recipe findRecipeById(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-
         if (optionalRecipe.isPresent()) {
-            return optionalRecipe.get();
+            Recipe recipe = optionalRecipe.get();
+            if (!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new BadRequestException();
+            return recipe;
         } else {
             throw new RecordNotFoundException();
         }
@@ -51,8 +64,10 @@ public class RecipeServiceImpl implements RecipeService {
         }
     }
 
+    //Bij deze methode ervoor zorgen de owner de inglogde gebruiker is ...
     @Override
     public void createRecipe(Recipe recipe) {
+        recipe.setOwner(getAuthenticatedUser());
         recipeRepository.save(recipe);
     }
 
@@ -108,6 +123,17 @@ public class RecipeServiceImpl implements RecipeService {
             recipeRepository.save(recipe);
         } else {
             throw new RecordNotFoundException();
+        }
+    }
+
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            UserDetails userPrincipal = (UserDetails)authentication.getPrincipal();
+            String username = userPrincipal.getUsername();
+            return userRepository.findById(username).orElse(null);
+        } else {
+            return null;
         }
     }
 }

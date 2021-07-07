@@ -1,10 +1,7 @@
 package nl.lucas.letscookapi.controller;
 
-import nl.lucas.letscookapi.exception.BadRequestException;
-import nl.lucas.letscookapi.exception.FileStorageException;
-import nl.lucas.letscookapi.exception.RecordNotFoundException;
+import nl.lucas.letscookapi.exception.*;
 //import nl.lucas.letscookapi.exception.UsernameNotFoundException;
-import nl.lucas.letscookapi.exception.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +36,13 @@ public class ExceptionController {
     @ExceptionHandler(FileStorageException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String FileStorageHandler(FileStorageException exception) {
+        return exception.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String ForbiddenHandler(ForbiddenException exception) {
         return exception.getMessage();
     }
 }

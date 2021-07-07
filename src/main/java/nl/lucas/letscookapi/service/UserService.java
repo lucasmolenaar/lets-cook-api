@@ -1,9 +1,11 @@
 package nl.lucas.letscookapi.service;
 
 import nl.lucas.letscookapi.model.Authority;
+import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.model.User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,6 +20,6 @@ public interface UserService {
     Set<Authority> getAuthorities(String username);
     void addAuthority(String username, String authority);
     void removeAuthority(String username, String authority);
-
+//    List<Recipe> getOwnedRecipes(String username);
 
 }
