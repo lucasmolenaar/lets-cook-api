@@ -7,7 +7,6 @@ import nl.lucas.letscookapi.utils.RecipePdfExporter;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,39 +39,30 @@ public class RecipeController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> getRecipeByName(@RequestParam("name") String name) {
-        return ResponseEntity.ok().body(recipeService.findRecipeByName(name));
+    public ResponseEntity<Object> getRecipeByName(@RequestParam(value = "name", required = false, defaultValue = "") String recipeName) {
+        return ResponseEntity.ok().body(recipeService.findRecipeByName(recipeName));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Object> createRecipe(@RequestBody Recipe recipe) {
         recipeService.createRecipe(recipe);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{recipeId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Object> deleteRecipe(@PathVariable("recipeId") Long id) {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{recipeId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Object> updateRecipe(@PathVariable("recipeId") Long id, @RequestBody Recipe updatedRecipe) {
         recipeService.updateRecipe(id, updatedRecipe);
         return ResponseEntity.noContent().build();
     }
-
-    /*
-    Hieronder andere manier van fileupload, lukt nog niet
-     */
-//    @PostMapping("/{recipeId}/image")
-//    public String uploadImage(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-//        recipeService.uploadPicture(file);
-//
-//        redirectAttributes.addFlashAttribute("message", "You successfully upload " + file.getOriginalFilename() + ".");
-//
-//        return "redirect:/";
-//    }
 
     @PostMapping("{recipeId}/image")
     public ResponseEntity<Object> uploadImage(@PathVariable("recipeId") Long id, @RequestParam("file") MultipartFile file) throws IOException {
@@ -100,18 +90,4 @@ public class RecipeController {
         RecipePdfExporter exporter = new RecipePdfExporter(recipe);
         exporter.export(response);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

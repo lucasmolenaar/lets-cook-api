@@ -1,6 +1,6 @@
 package nl.lucas.letscookapi.service;
 
-import nl.lucas.letscookapi.exception.BadRequestException;
+import nl.lucas.letscookapi.exception.ForbiddenException;
 import nl.lucas.letscookapi.exception.RecordNotFoundException;
 import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.model.User;
@@ -21,9 +21,6 @@ import java.util.Optional;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
-
-//    @Value("${app.upload.dir:${user.home}}")
-//    public String uploadDir;
 
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
@@ -46,7 +43,7 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            if (!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new BadRequestException();
+            if (!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
             return recipe;
         } else {
             throw new RecordNotFoundException();
@@ -64,7 +61,6 @@ public class RecipeServiceImpl implements RecipeService {
         }
     }
 
-    //Bij deze methode ervoor zorgen de owner de inglogde gebruiker is ...
     @Override
     public void createRecipe(Recipe recipe) {
         recipe.setOwner(getAuthenticatedUser());
@@ -72,9 +68,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    //POST AUTHORIZE IS HIER NIET NODIG
     public void deleteRecipe(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+
         if (optionalRecipe.isPresent()) {
+            Recipe recipe = optionalRecipe.get();
+            if (!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
             recipeRepository.deleteById(id);
         } else {
             throw new RecordNotFoundException();
@@ -83,10 +83,14 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    //POSTAUTHORIRZE IS HIER NIET NODIG
     public void updateRecipe(Long id, Recipe updatedRecipe) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
+            if(!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
+
             recipe.setName(updatedRecipe.getName());
             recipe.setCalories(updatedRecipe.getCalories());
             recipe.setTimeInMinutes(updatedRecipe.getTimeInMinutes());
@@ -98,20 +102,6 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RecordNotFoundException();
         }
     }
-
-    /*
-    Hieronder andere manier van fileupload, lukt nog niet
-     */
-//
-//    public void uploadPicture(MultipartFile file) {
-//        try {
-//            Path copyLocation = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-//            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new FileStorageException("Could not store file " + file.getOriginalFilename() + ". Please try again.");
-//        }
-//    }
 
     @Override
     public void uploadImage(Long id, MultipartFile file) throws IOException {
