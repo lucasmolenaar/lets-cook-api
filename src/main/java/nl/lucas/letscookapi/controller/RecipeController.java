@@ -21,12 +21,8 @@ import java.util.Date;
 @RequestMapping("/recipes")
 public class RecipeController {
 
-    private final RecipeService recipeService;
-
     @Autowired
-    public RecipeController(RecipeService recipeService) {
-        this.recipeService = recipeService;
-    }
+    private RecipeService recipeService;
 
     @GetMapping
     public ResponseEntity<Object> getRecipes() {

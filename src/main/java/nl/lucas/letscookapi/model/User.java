@@ -34,6 +34,10 @@ public class User {
     @JsonManagedReference
     private List<Recipe> ownedRecipes;
 
+//    @OneToMany(mappedBy = "owner")
+//    @JsonManagedReference
+//    private List<Comment> ownedComments;
+
     public String getUsername() {
         return username;
     }
@@ -101,4 +105,12 @@ public class User {
     public void setOwnedRecipes(List<Recipe> ownedRecipes) {
         this.ownedRecipes = ownedRecipes;
     }
+
+//    public List<Comment> getOwnedComments() {
+//        return ownedComments;
+//    }
+//
+//    public void setOwnedComments(List<Comment> ownedComments) {
+//        this.ownedComments = ownedComments;
+//    }
 }

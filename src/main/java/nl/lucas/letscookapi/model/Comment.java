@@ -22,6 +22,7 @@ public class Comment {
 //    @ManyToOne
 //    @JoinColumn(name = "owner")
 //    @JsonIgnoreProperties("comments")
+//    @JsonBackReference
 //    private User owner;
 
     public Long getId() {
@@ -55,7 +56,7 @@ public class Comment {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
-//
+
 //    public User getOwner() {
 //        return owner;
 //    }

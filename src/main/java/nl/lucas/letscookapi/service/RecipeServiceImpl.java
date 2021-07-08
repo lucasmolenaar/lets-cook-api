@@ -7,7 +7,6 @@ import nl.lucas.letscookapi.model.User;
 import nl.lucas.letscookapi.repository.RecipeRepository;
 import nl.lucas.letscookapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,15 +21,11 @@ import java.util.Optional;
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
-    private final RecipeRepository recipeRepository;
-    private final UserRepository userRepository;
-
+    @Autowired
+    private RecipeRepository recipeRepository;
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository recipeRepository, UserRepository userRepository) {
-        this.recipeRepository = recipeRepository;
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Override
     public List<Recipe> findAllRecipes() {

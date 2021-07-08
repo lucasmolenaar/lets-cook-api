@@ -33,13 +33,6 @@ public class ExceptionController {
     }
 
     @ResponseBody
-    @ExceptionHandler(FileStorageException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String FileStorageHandler(FileStorageException exception) {
-        return exception.getMessage();
-    }
-
-    @ResponseBody
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String ForbiddenHandler(ForbiddenException exception) {

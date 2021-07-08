@@ -16,12 +16,8 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -123,8 +119,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-
-    //NOG NIET WERKEND
     @Override
     public List<Recipe> getOwnedRecipes(String username) {
         Optional<User> optionalUser = userRepository.findById(username);

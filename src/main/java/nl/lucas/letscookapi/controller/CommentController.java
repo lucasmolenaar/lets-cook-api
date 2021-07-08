@@ -11,12 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/recipes")
 public class CommentController {
 
-    private final CommentService commentService;
-
     @Autowired
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
+    private CommentService commentService;
 
     @GetMapping("/{recipeId}/comments")
     public ResponseEntity<Object> getComments(@PathVariable("recipeId") Long id) {

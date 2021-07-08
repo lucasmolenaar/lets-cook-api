@@ -154,9 +154,9 @@ public class Recipe {
     }
 
     public static class Builder {
-        private String name;
-        private int calories;
-        private int timeInMinutes;
+        private final String name;
+        private final int calories;
+        private final int timeInMinutes;
         private List<Ingredient> ingredients;
         private List<Step> steps;
         private List<Equipment> equipment;

@@ -21,16 +21,14 @@ import java.util.Optional;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepository commentRepository;
-    private final RecipeRepository recipeRepository;
-    private final UserRepository userRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, RecipeRepository recipeRepository, UserRepository userRepository) {
-        this.commentRepository = commentRepository;
-        this.recipeRepository = recipeRepository;
-        this.userRepository = userRepository;
-    }
+    private RecipeRepository recipeRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<Comment> findAllCommentsForRecipe(Long id) {
@@ -81,7 +79,6 @@ public class CommentServiceImpl implements CommentService {
             throw new RecordNotFoundException();
         }
 
-        //hier moet ook nog bij, if owner comment == auth.user
         if(!optionalRecipe.get().getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
         commentRepository.deleteById(commentId);
     }
