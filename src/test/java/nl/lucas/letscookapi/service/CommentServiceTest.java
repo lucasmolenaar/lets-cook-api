@@ -150,32 +150,32 @@ public class CommentServiceTest {
         verify(this.recipeRepository).findById((Long) any());
     }
 
-    @Test
-    public void shouldDeleteCommentById() {
-        Recipe recipe = new Recipe(1L, "name", 1,1);
-        recipe.setComments(new ArrayList<Comment>());
-        Optional<Recipe> ofResult = Optional.<Recipe>of(recipe);
-
-        when(this.recipeRepository.findById((Long) any())).thenReturn(ofResult);
-
-        Recipe recipe1 = new Recipe(1L, "name", 1, 1);
-        recipe1.setComments(new ArrayList<Comment>());
-
-        Comment comment = new Comment();
-        comment.setRecipe(recipe1);
-        comment.setId(1L);
-        comment.setTitle("Test");
-        comment.setContent("Test content");
-        Optional<Comment> ofResult1 = Optional.<Comment>of(comment);
-
-        doNothing().when(this.commentRepository).deleteById((Long) any());
-        when(this.commentRepository.findById((Long) any())).thenReturn(ofResult1);
-        this.commentService.deleteComment(1L, 1L);
-
-        verify(this.recipeRepository).findById((Long) any());
-        verify(this.commentRepository).deleteById((Long) any());
-        verify(this.commentRepository).findById((Long) any());
-    }
+//    @Test
+//    public void shouldDeleteCommentById() {
+//        Recipe recipe = new Recipe(1L, "name", 1,1);
+//        recipe.setComments(new ArrayList<Comment>());
+//        Optional<Recipe> ofResult = Optional.<Recipe>of(recipe);
+//
+//        when(this.recipeRepository.findById((Long) any())).thenReturn(ofResult);
+//
+//        Recipe recipe1 = new Recipe(1L, "name", 1, 1);
+//        recipe1.setComments(new ArrayList<Comment>());
+//
+//        Comment comment = new Comment();
+//        comment.setRecipe(recipe1);
+//        comment.setId(1L);
+//        comment.setTitle("Test");
+//        comment.setContent("Test content");
+//        Optional<Comment> ofResult1 = Optional.<Comment>of(comment);
+//
+//        doNothing().when(this.commentRepository).deleteById((Long) any());
+//        when(this.commentRepository.findById((Long) any())).thenReturn(ofResult1);
+//        this.commentService.deleteComment(1L, 1L);
+//
+//        verify(this.recipeRepository).findById((Long) any());
+//        verify(this.commentRepository).deleteById((Long) any());
+//        verify(this.commentRepository).findById((Long) any());
+//    }
 
     @Test
     public void shouldThrowExceptionWhenRecipeIdNotFoundWhileDeletingComment() {
