@@ -13,7 +13,6 @@ public interface UserService {
 
     Collection<User> getUsers();
     Optional<User> getUser(String username);
-    boolean userExists(String username);
     String createUser(User user);
     void updateUser(String username, User user);
     void deleteUser(String username);

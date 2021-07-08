@@ -43,12 +43,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean userExists(String username) {
-        Optional<User> user = userRepository.findById(username);
-        return user.isPresent();
-    }
-
-    @Override
     public String createUser(User user) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         String encodedPassword = passwordEncoder.encode(user.getPassword());
