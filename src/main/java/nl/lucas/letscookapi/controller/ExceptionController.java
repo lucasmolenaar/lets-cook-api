@@ -38,4 +38,9 @@ public class ExceptionController {
     public String ForbiddenHandler(ForbiddenException exception) {
         return exception.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(UsernameAlreadyInUseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String UsernameAlreadyInUseHandler(UsernameAlreadyInUseException exception) {return exception.getMessage();}
 }

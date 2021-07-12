@@ -72,7 +72,7 @@ public class RecipeController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{recipeId}/export/pdf")
+    @GetMapping("/{recipeId}/export")
     public void exportToPdf(@PathVariable("recipeId") Long recipeId, HttpServletResponse response) throws DocumentException, IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");

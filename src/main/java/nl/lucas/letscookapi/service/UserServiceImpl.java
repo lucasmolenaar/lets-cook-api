@@ -1,6 +1,7 @@
 package nl.lucas.letscookapi.service;
 
 import nl.lucas.letscookapi.exception.BadRequestException;
+import nl.lucas.letscookapi.exception.UsernameAlreadyInUseException;
 import nl.lucas.letscookapi.model.Authority;
 import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.model.User;
@@ -40,6 +41,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createUser(User user) {
+        if (userRepository.existsById(user.getUsername())) throw new UsernameAlreadyInUseException();
+
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
