@@ -38,5 +38,5 @@ INSERT INTO steps (step_count, description, recipe_id) VALUES (5, 'Doe de rest v
 INSERT INTO steps (step_count, description, recipe_id) VALUES (6, 'Voeg de currypasta toe en laat intrekken voor 3 minuten op middelhoog vuur', 2);
 INSERT INTO steps (step_count, description, recipe_id) VALUES (7, 'Voeg de kokosmelk toe en laat 15 minuten op laag vuur koken', 2);
 INSERT INTO steps (step_count, description, recipe_id) VALUES (8, 'Voeg de rijst toe aan de groente', 2);
-INSERT INTO equipment (name, recipe_id) VALUES ('Wokpan', 1);
-INSERT INTO equipment (name, recipe_id) VALUES ('Kookpan', 1);
+INSERT INTO equipment (name, recipe_id) VALUES ('Wokpan', 2);
+INSERT INTO equipment (name, recipe_id) VALUES ('Kookpan', 2);

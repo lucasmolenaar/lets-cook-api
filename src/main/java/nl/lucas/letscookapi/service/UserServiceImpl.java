@@ -66,9 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(String username, User updatedUser) {
-        if (!userRepository.existsById(username)) {
-            throw new UsernameNotFoundException(username);
-        }
+        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        if (userRepository.existsById(updatedUser.getUsername())) throw new UsernameAlreadyInUseException();
+
 
         String encodedPassword = passwordEncoder.encode(updatedUser.getPassword());
 

@@ -2,7 +2,6 @@ package nl.lucas.letscookapi.utils;
 
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -20,9 +19,64 @@ import java.util.List;
 public class RecipePdfExporter {
 
     private final Recipe recipe;
+    Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 
     public RecipePdfExporter(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public void export(HttpServletResponse response) throws DocumentException, IOException {
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, response.getOutputStream());
+
+        document.open();
+
+        setFont(18, Color.BLACK);
+
+        //RECEPT TITEL
+        Paragraph recipeTitle = new Paragraph(recipe.getName(), font);
+        recipeTitle.setAlignment(Paragraph.ALIGN_LEFT);
+        document.add(recipeTitle);
+
+        setFont(12, Color.BLACK);
+
+        //CALORIEËN
+        Paragraph calories = new Paragraph("Calorieën: " + recipe.getCalories(), font);
+        calories.setSpacingBefore(10);
+        document.add(calories);
+
+        //BEREIDINGSDUUR
+        Paragraph timeInMinutes = new Paragraph("Bereidingsduur: " + recipe.getTimeInMinutes() + " minuten", font);
+        document.add(timeInMinutes);
+
+        //INGREDIËNTEN
+        Paragraph ingredientsTile = new Paragraph("Dit zijn de ingrediënten: ", font);
+        ingredientsTile.setSpacingBefore(20);
+        document.add(ingredientsTile);
+
+        PdfPTable ingredientsTable = setTableStyle(2, 100f, new float[]{8f, 2f}, 10);
+        writeIngredientsTable(ingredientsTable);
+        document.add(ingredientsTable);
+
+        //BENODIGDHEDEN
+        Paragraph equipmentTitle = new Paragraph("Verder heb je nodig: ", font);
+        equipmentTitle.setSpacingBefore(20);
+        document.add(equipmentTitle);
+
+        PdfPTable equipmentTable = setTableStyle(1, 100f, new float[]{5f}, 10);
+        writeEquipmentTable(equipmentTable);
+        document.add(equipmentTable);
+
+        //STAPPEN
+        Paragraph stepsTitle = new Paragraph("Bereidingswijze: ", font);
+        stepsTitle.setSpacingBefore(20);
+        document.add(stepsTitle);
+
+        PdfPTable stepsTable = setTableStyle(2, 100f, new float[]{1f, 12f}, 10);
+        writeStepsTable(stepsTable);
+        document.add(stepsTable);
+
+        document.close();
     }
 
     private void writeIngredientsTable(PdfPTable table) {
@@ -58,82 +112,17 @@ public class RecipePdfExporter {
         }
     }
 
-    public void export(HttpServletResponse response) throws DocumentException, IOException {
-        Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, response.getOutputStream());
-
-        document.open();
-
-        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        font.setSize(18);
+    private void setFont(int size, Color color) {
+        font.setSize(size);
         font.setColor(Color.BLACK);
+    }
 
-        //RECEPT TITEL
-        Paragraph recipeTitle = new Paragraph(recipe.getName(), font);
-        recipeTitle.setAlignment(Paragraph.ALIGN_LEFT);
-        document.add(recipeTitle);
-
-        font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        font.setSize(12);
-        font.setColor(Color.BLACK);
-
-        //CALORIEËN
-        Paragraph calories = new Paragraph("Calorieën: " + recipe.getCalories(), font);
-        calories.setSpacingBefore(10);
-        document.add(calories);
-
-        //BEREIDINGSDUUR
-        Paragraph timeInMinutes = new Paragraph("Bereidingsduur: " + recipe.getTimeInMinutes() + " minuten", font);
-        document.add(timeInMinutes);
-
-        //INGREDIËNTEN
-        Paragraph ingredientsTile = new Paragraph("Dit zijn de ingrediënten: ", font);
-        ingredientsTile.setSpacingBefore(20);
-        document.add(ingredientsTile);
-
-        PdfPTable ingredientsTable = new PdfPTable(2);
-        ingredientsTable.setWidthPercentage(100f);
-        ingredientsTable.setWidths(new float[]{8f, 2f});
-        ingredientsTable.setSpacingBefore(10);
-        writeIngredientsTable(ingredientsTable);
-        document.add(ingredientsTable);
-
-        //BENODIGDHEDEN
-        Paragraph equipmentTitle = new Paragraph("Verder heb je nodig: ", font);
-        equipmentTitle.setSpacingBefore(20);
-        document.add(equipmentTitle);
-
-        PdfPTable equipmentTable = new PdfPTable(1);
-        equipmentTable.setWidthPercentage(100f);
-        equipmentTable.setWidths(new float[]{5f});
-        equipmentTable.setSpacingBefore(10);
-        writeEquipmentTable(equipmentTable);
-        document.add(equipmentTable);
-
-        //STAPPEN
-        Paragraph stepsTitle = new Paragraph("Bereidingswijze: ", font);
-        stepsTitle.setSpacingBefore(20);
-        document.add(stepsTitle);
-
-        PdfPTable stepsTable = new PdfPTable(2);
-        stepsTable.setWidthPercentage(100f);
-        stepsTable.setWidths(new float[]{1f, 12f});
-        stepsTable.setSpacingBefore(10);
-        writeStepsTable(stepsTable);
-        document.add(stepsTable);
-
-        //FOTO
-        try {
-            byte[] imageBytes = recipe.getRecipeImage();
-            Image recipeImage = Image.getInstance(imageBytes);
-            recipeImage.setAbsolutePosition(100, 100);
-            recipeImage.scalePercent(50);
-            document.add(recipeImage);
-        } catch (Exception e) {
-            System.out.println("Could not find image");
-        }
-
-        document.close();
+    private PdfPTable setTableStyle(int numCol, float widthPercentage, float[] cellWidths, int spacing) {
+        PdfPTable table = new PdfPTable(numCol);
+        table.setWidthPercentage(widthPercentage);
+        table.setWidths(cellWidths);
+        table.setSpacingBefore(spacing);
+        return table;
     }
 
 }
