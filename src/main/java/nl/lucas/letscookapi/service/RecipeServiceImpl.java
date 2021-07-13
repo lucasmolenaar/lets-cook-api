@@ -68,7 +68,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            if (!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
+            checkUser(recipe);
             recipeRepository.deleteById(id);
         } else {
             throw new RecordNotFoundException();
@@ -83,7 +83,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            if(!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
+            checkUser(recipe);
 
             recipe.setName(updatedRecipe.getName());
             recipe.setCalories(updatedRecipe.getCalories());
@@ -103,7 +103,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
-            if(!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
+            checkUser(recipe);
             recipe.setRecipeImage(file.getBytes());
             recipeRepository.save(recipe);
         } else {
@@ -120,5 +120,9 @@ public class RecipeServiceImpl implements RecipeService {
         } else {
             return null;
         }
+    }
+
+    public void checkUser(Recipe recipe) {
+        if(!recipe.getOwner().getUsername().equalsIgnoreCase(getAuthenticatedUser().getUsername())) throw new ForbiddenException();
     }
 }
