@@ -2,6 +2,7 @@ package nl.lucas.letscookapi.service;
 
 import nl.lucas.letscookapi.exception.BadRequestException;
 import nl.lucas.letscookapi.model.Authority;
+import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.model.User;
 import nl.lucas.letscookapi.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -205,5 +206,30 @@ public class UserServiceTest {
         when(this.userRepository.existsById(anyString())).thenReturn(false);
         assertThrows(UsernameNotFoundException.class, () -> this.userService.removeAuthority("user", "ROLE_TEST"));
         verify(this.userRepository).existsById(anyString());
+    }
+
+    @Test
+    public void shouldGetUserOwnedRecipes() {
+        User user = new User();
+        user.setPassword("password");
+        user.setEmail("test@test.com");
+        user.setUsername("user");
+        ArrayList<Recipe> recipeList = new ArrayList<Recipe>();
+        user.setOwnedRecipes(recipeList);
+        Optional<User> ofResult = Optional.<User>of(user);
+
+        when(this.userRepository.findById(anyString())).thenReturn(ofResult);
+        List<Recipe> actualOwnedRecipes = this.userService.getOwnedRecipes("user");
+        assertSame(recipeList, actualOwnedRecipes);
+        assertTrue(actualOwnedRecipes.isEmpty());
+        verify(this.userRepository).findById(anyString());
+        assertTrue(this.userService.getUsers().isEmpty());
+    }
+
+    @Test
+    public void shouldThrowErrorWhenUsernameNotFoundWhileGettingOwnedRecipes() {
+        when(this.userRepository.findById(anyString())).thenReturn(Optional.<User>empty());
+        assertThrows(UsernameNotFoundException.class, () -> this.userService.getOwnedRecipes("user"));
+        verify(this.userRepository).findById(anyString());
     }
 }

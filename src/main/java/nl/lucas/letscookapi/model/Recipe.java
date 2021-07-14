@@ -33,7 +33,7 @@ public class Recipe {
     @JsonManagedReference
     private List<Step> steps;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Equipment> equipment;
 

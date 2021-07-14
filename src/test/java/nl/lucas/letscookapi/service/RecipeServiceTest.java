@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -61,7 +60,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    public void testFindRecipeById() {
+    public void shouldFindRecipeById() {
         Recipe recipe = new Recipe(1L, "Name", 1, 1);
         Optional<Recipe> ofResult = Optional.of(recipe);
         when(this.recipeRepository.findById((Long) any())).thenReturn(ofResult);
@@ -97,6 +96,13 @@ public class RecipeServiceTest {
         assertSame(recipe, this.recipeService.findRecipeByName("Name"));
         verify(this.recipeRepository).findByNameIgnoreCase(anyString());
         assertTrue(this.recipeService.findAllRecipes().isEmpty());
+    }
+
+    @Test
+    public void shouldThrowErrorWhenNameToFindNotFound() {
+        when(this.recipeRepository.findByNameIgnoreCase(anyString())).thenReturn(null);
+        assertThrows(RecordNotFoundException.class, () -> this.recipeService.findRecipeByName("TestRecipe"));
+        verify(this.recipeRepository).findByNameIgnoreCase(anyString());
     }
 
 //    @Test
