@@ -3,7 +3,7 @@ package nl.lucas.letscookapi.controller;
 import nl.lucas.letscookapi.exception.BadRequestException;
 import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.service.RecipeService;
-import nl.lucas.letscookapi.utils.RecipePdfExporter;
+import nl.lucas.letscookapi.utils.ExportToPdf;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +63,9 @@ public class RecipeController {
     @PostMapping("{recipeId}/image")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Object> uploadImage(@PathVariable("recipeId") Long id, @RequestParam("file") MultipartFile file) throws IOException {
-        if (file.getContentType() == null || !file.getContentType().equals("image/jpeg")) {
+        if (file.getContentType() == null) {
+            throw new BadRequestException();
+        } else if (!file.getContentType().equals("image/jpeg") && !file.getContentType().equals("image/jpg") && !file.getContentType().equals("image/png")) {
             throw new BadRequestException();
         } else {
             recipeService.uploadImage(id, file);
@@ -84,7 +86,7 @@ public class RecipeController {
 
         Recipe recipe = recipeService.findRecipeById(recipeId);
 
-        RecipePdfExporter exporter = new RecipePdfExporter(recipe);
+        ExportToPdf exporter = new ExportToPdf(recipe);
         exporter.export(response);
     }
 }

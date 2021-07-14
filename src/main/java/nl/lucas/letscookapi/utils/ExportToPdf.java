@@ -16,12 +16,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-public class RecipePdfExporter {
+public class ExportToPdf {
 
     private final Recipe recipe;
     Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 
-    public RecipePdfExporter(Recipe recipe) {
+    public ExportToPdf(Recipe recipe) {
         this.recipe = recipe;
     }
 
