@@ -1,11 +1,11 @@
 package nl.lucas.letscookapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "equipment")
 public class Equipment {
 
     @Id

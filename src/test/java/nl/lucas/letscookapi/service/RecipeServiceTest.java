@@ -12,6 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
@@ -95,6 +98,17 @@ public class RecipeServiceTest {
         when(this.recipeRepository.findByNameIgnoreCase(anyString())).thenReturn(recipe);
         assertSame(recipe, this.recipeService.findRecipeByName("Name"));
         verify(this.recipeRepository).findByNameIgnoreCase(anyString());
+        assertTrue(this.recipeService.findAllRecipes().isEmpty());
+    }
+
+    @Test
+    public void shouldFindRecipesPerPage() {
+        PageImpl<Recipe> pageImpl = new PageImpl<Recipe>(new ArrayList<Recipe>());
+        when(this.recipeRepository.findAll((Pageable) any())).thenReturn(pageImpl);
+        Page<Recipe> actualFindRecipesPerPageResult = this.recipeService.findRecipesPerPage(null);
+        assertSame(pageImpl, actualFindRecipesPerPageResult);
+        assertTrue(actualFindRecipesPerPageResult.toList().isEmpty());
+        verify(this.recipeRepository).findAll((Pageable) any());
         assertTrue(this.recipeService.findAllRecipes().isEmpty());
     }
 

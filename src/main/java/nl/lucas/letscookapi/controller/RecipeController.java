@@ -6,6 +6,8 @@ import nl.lucas.letscookapi.service.RecipeService;
 import nl.lucas.letscookapi.utils.ExportToPdf;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,12 @@ public class RecipeController {
     @GetMapping("/search")
     public ResponseEntity<Object> getRecipeByName(@RequestParam(value = "name", required = false, defaultValue = "") String recipeName) {
         return ResponseEntity.ok().body(recipeService.findRecipeByName(recipeName));
+    }
+
+    @GetMapping("/pages")
+    public Page<Recipe> getRecipesPerPage(@RequestParam("page") int page) {
+        var pageRequest = PageRequest.of(page, 10);
+        return recipeService.findRecipesPerPage(pageRequest);
     }
 
     @PostMapping

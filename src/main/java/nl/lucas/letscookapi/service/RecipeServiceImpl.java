@@ -7,6 +7,8 @@ import nl.lucas.letscookapi.model.User;
 import nl.lucas.letscookapi.repository.RecipeRepository;
 import nl.lucas.letscookapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,6 +55,11 @@ public class RecipeServiceImpl implements RecipeService {
         } else {
             return recipe;
         }
+    }
+
+    @Override
+    public Page<Recipe> findRecipesPerPage(Pageable pageable) {
+        return recipeRepository.findAll(pageable);
     }
 
     @Override
