@@ -35,8 +35,6 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    //DEZE POSTAUTHORIZE KLOPT, MAAR IS HIER NIET NODIG
-//    @PostAuthorize("returnObject.owner.username == authentication.name")
     public Recipe findRecipeById(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (optionalRecipe.isPresent()) {
@@ -84,7 +82,6 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    //POSTAUTHORIRZE IS HIER NIET NODIG
     public void updateRecipe(Long id, Recipe updatedRecipe) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 

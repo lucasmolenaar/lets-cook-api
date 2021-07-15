@@ -3,12 +3,8 @@ package nl.lucas.letscookapi.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Entity
