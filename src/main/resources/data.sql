@@ -40,3 +40,6 @@ INSERT INTO steps (step_count, description, recipe_id) VALUES (7, 'Voeg de kokos
 INSERT INTO steps (step_count, description, recipe_id) VALUES (8, 'Voeg de rijst toe aan de groente', 2);
 INSERT INTO equipment (name, recipe_id) VALUES ('Wokpan', 2);
 INSERT INTO equipment (name, recipe_id) VALUES ('Kookpan', 2);
+
+INSERT INTO comments (content, title, recipe_id) VALUES ('Nice!', 'I really like this recipe!', 1);
+INSERT INTO comments (content, title, recipe_id) VALUES ('Not bad.', 'Good recipe.', 2);
