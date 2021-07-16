@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/v1/api/recipes")
+@RequestMapping("/api/v1/recipes")
 public class RecipeController {
 
     @Autowired

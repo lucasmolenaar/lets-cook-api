@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/api/recipes")
+@RequestMapping("/api/v1/recipes")
 public class CommentController {
 
     @Autowired

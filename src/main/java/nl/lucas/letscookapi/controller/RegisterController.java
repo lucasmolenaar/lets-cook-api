@@ -14,7 +14,7 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/v1/api/register")
+    @PostMapping("/api/v1/register")
     public ResponseEntity<Object> registerUser(@RequestBody User newUser) {
         userService.createUser(newUser);
         return ResponseEntity.ok().body(newUser.getUsername() + " has been registered");
