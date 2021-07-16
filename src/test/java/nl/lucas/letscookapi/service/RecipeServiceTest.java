@@ -45,7 +45,7 @@ public class RecipeServiceTest {
         recipes.add(recipe3);
 
         when(recipeRepository.findAll()).thenReturn(recipes);
-        List<Recipe> recipesList = recipeService.findAllRecipes();
+        List<Recipe> recipesList = recipeService.getAllRecipes();
 
         assertEquals(3, recipesList.size());
         verify(recipeRepository, times(1)).findAll();
@@ -56,15 +56,15 @@ public class RecipeServiceTest {
         Recipe recipe = new Recipe(1L, "Name", 1, 1);
         Optional<Recipe> ofResult = Optional.of(recipe);
         when(this.recipeRepository.findById((Long) any())).thenReturn(ofResult);
-        assertSame(recipe, this.recipeService.findRecipeById(1L));
+        assertSame(recipe, this.recipeService.getRecipeById(1L));
         verify(this.recipeRepository).findById((Long) any());
-        assertTrue(this.recipeService.findAllRecipes().isEmpty());
+        assertTrue(this.recipeService.getAllRecipes().isEmpty());
     }
 
     @Test
     public void shouldThrowExceptionWhenIdNotFound() {
         when(this.recipeRepository.findById((Long) any())).thenReturn(Optional.<Recipe>empty());
-        assertThrows(RecordNotFoundException.class, () -> this.recipeService.findRecipeById(1L));
+        assertThrows(RecordNotFoundException.class, () -> this.recipeService.getRecipeById(1L));
         verify(this.recipeRepository).findById((Long) any());
     }
 
@@ -72,26 +72,26 @@ public class RecipeServiceTest {
     public void shouldFindRecipeByName() {
         Recipe recipe = new Recipe(1L, "Name", 1, 1);
         when(this.recipeRepository.findByNameIgnoreCase(anyString())).thenReturn(recipe);
-        assertSame(recipe, this.recipeService.findRecipeByName("Name"));
+        assertSame(recipe, this.recipeService.getRecipeByName("Name"));
         verify(this.recipeRepository).findByNameIgnoreCase(anyString());
-        assertTrue(this.recipeService.findAllRecipes().isEmpty());
+        assertTrue(this.recipeService.getAllRecipes().isEmpty());
     }
 
     @Test
     public void shouldFindRecipesPerPage() {
         PageImpl<Recipe> pageImpl = new PageImpl<Recipe>(new ArrayList<Recipe>());
         when(this.recipeRepository.findAll((Pageable) any())).thenReturn(pageImpl);
-        Page<Recipe> actualFindRecipesPerPageResult = this.recipeService.findRecipesPerPage(null);
+        Page<Recipe> actualFindRecipesPerPageResult = this.recipeService.getRecipesPerPage(null);
         assertSame(pageImpl, actualFindRecipesPerPageResult);
         assertTrue(actualFindRecipesPerPageResult.toList().isEmpty());
         verify(this.recipeRepository).findAll((Pageable) any());
-        assertTrue(this.recipeService.findAllRecipes().isEmpty());
+        assertTrue(this.recipeService.getAllRecipes().isEmpty());
     }
 
     @Test
     public void shouldThrowErrorWhenNameToFindNotFound() {
         when(this.recipeRepository.findByNameIgnoreCase(anyString())).thenReturn(null);
-        assertThrows(RecordNotFoundException.class, () -> this.recipeService.findRecipeByName("TestRecipe"));
+        assertThrows(RecordNotFoundException.class, () -> this.recipeService.getRecipeByName("TestRecipe"));
         verify(this.recipeRepository).findByNameIgnoreCase(anyString());
     }
 

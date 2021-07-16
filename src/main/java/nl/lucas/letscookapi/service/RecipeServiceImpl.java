@@ -30,12 +30,12 @@ public class RecipeServiceImpl implements RecipeService {
     private UserRepository userRepository;
 
     @Override
-    public List<Recipe> findAllRecipes() {
+    public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
     @Override
-    public Recipe findRecipeById(Long id) {
+    public Recipe getRecipeById(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (optionalRecipe.isPresent()) {
             return optionalRecipe.get();
@@ -45,7 +45,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe findRecipeByName(String name) {
+    public Recipe getRecipeByName(String name) {
         Recipe recipe = recipeRepository.findByNameIgnoreCase(name);
 
         if (recipe == null) {
@@ -56,7 +56,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Page<Recipe> findRecipesPerPage(Pageable pageable) {
+    public Page<Recipe> getRecipesPerPage(Pageable pageable) {
         return recipeRepository.findAll(pageable);
     }
 

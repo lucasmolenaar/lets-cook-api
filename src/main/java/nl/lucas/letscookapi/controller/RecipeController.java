@@ -28,23 +28,23 @@ public class RecipeController {
 
     @GetMapping
     public ResponseEntity<Object> getRecipes() {
-        return ResponseEntity.ok().body(recipeService.findAllRecipes());
+        return ResponseEntity.ok().body(recipeService.getAllRecipes());
     }
 
     @GetMapping("/{recipeId}")
     public ResponseEntity<Object> getRecipeById(@PathVariable("recipeId") Long id) {
-        return ResponseEntity.ok().body(recipeService.findRecipeById(id));
+        return ResponseEntity.ok().body(recipeService.getRecipeById(id));
     }
 
     @GetMapping("/search")
     public ResponseEntity<Object> getRecipeByName(@RequestParam(value = "name", required = false, defaultValue = "") String recipeName) {
-        return ResponseEntity.ok().body(recipeService.findRecipeByName(recipeName));
+        return ResponseEntity.ok().body(recipeService.getRecipeByName(recipeName));
     }
 
     @GetMapping("/pages")
     public Page<Recipe> getRecipesPerPage(@RequestParam("page") int page) {
         var pageRequest = PageRequest.of(page, 10);
-        return recipeService.findRecipesPerPage(pageRequest);
+        return recipeService.getRecipesPerPage(pageRequest);
     }
 
     @PostMapping
@@ -85,7 +85,7 @@ public class RecipeController {
         String headerValue = "attachment; filename=recipe_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        Recipe recipe = recipeService.findRecipeById(recipeId);
+        Recipe recipe = recipeService.getRecipeById(recipeId);
 
         ExportToPdf exporter = new ExportToPdf(recipe);
         exporter.export(response);

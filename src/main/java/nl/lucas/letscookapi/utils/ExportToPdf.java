@@ -33,23 +33,22 @@ public class ExportToPdf {
 
         setFont(18, Color.BLACK);
 
-        //RECEPT TITEL
+        //Recipe title
         Paragraph recipeTitle = new Paragraph(recipe.getName(), font);
-        recipeTitle.setAlignment(Paragraph.ALIGN_LEFT);
         document.add(recipeTitle);
 
         setFont(12, Color.BLACK);
 
-        //CALORIEËN
+        //Calories
         Paragraph calories = new Paragraph("Calorieën: " + recipe.getCalories(), font);
         calories.setSpacingBefore(10);
         document.add(calories);
 
-        //BEREIDINGSDUUR
+        //Preparation time
         Paragraph timeInMinutes = new Paragraph("Bereidingsduur: " + recipe.getTimeInMinutes() + " minuten", font);
         document.add(timeInMinutes);
 
-        //INGREDIËNTEN
+        //Ingredients
         Paragraph ingredientsTile = new Paragraph("Dit zijn de ingrediënten: ", font);
         ingredientsTile.setSpacingBefore(20);
         document.add(ingredientsTile);
@@ -58,7 +57,7 @@ public class ExportToPdf {
         writeIngredientsTable(ingredientsTable);
         document.add(ingredientsTable);
 
-        //BENODIGDHEDEN
+        //Equipment
         Paragraph equipmentTitle = new Paragraph("Verder heb je nodig: ", font);
         equipmentTitle.setSpacingBefore(20);
         document.add(equipmentTitle);
@@ -67,7 +66,7 @@ public class ExportToPdf {
         writeEquipmentTable(equipmentTable);
         document.add(equipmentTable);
 
-        //STAPPEN
+        //Steps
         Paragraph stepsTitle = new Paragraph("Bereidingswijze: ", font);
         stepsTitle.setSpacingBefore(20);
         document.add(stepsTitle);

@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface RecipeService {
 
-    List<Recipe> findAllRecipes();
-    Recipe findRecipeById(Long id);
-    Recipe findRecipeByName(String name);
-    Page<Recipe> findRecipesPerPage(Pageable pageable);
+    List<Recipe> getAllRecipes();
+    Recipe getRecipeById(Long id);
+    Recipe getRecipeByName(String name);
+    Page<Recipe> getRecipesPerPage(Pageable pageable);
     void createRecipe(Recipe recipe);
     void deleteRecipe(Long id);
     void uploadImage(Long id, MultipartFile file) throws IOException;

@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
-        //standard authority
+        //Setting standard authority
         Authority standardAuthority = new Authority(user.getUsername(), "ROLE_USER");
         Set<Authority> standardAuthorities = new HashSet<>();
         standardAuthorities.add(standardAuthority);
@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
     public void updateUser(String username, User updatedUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         if (userRepository.existsById(updatedUser.getUsername())) throw new UsernameAlreadyInUseException();
-
 
         String encodedPassword = passwordEncoder.encode(updatedUser.getPassword());
 

@@ -1,7 +1,6 @@
 package nl.lucas.letscookapi.service;
 
 import nl.lucas.letscookapi.model.Authority;
-import nl.lucas.letscookapi.model.Comment;
 import nl.lucas.letscookapi.model.Recipe;
 import nl.lucas.letscookapi.model.User;
 
