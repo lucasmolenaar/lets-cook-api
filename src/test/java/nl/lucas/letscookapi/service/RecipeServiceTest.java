@@ -140,36 +140,6 @@ public class RecipeServiceTest {
     }
 
 //    @Test
-//    public void shouldUpdateRecipe() {
-//        Recipe recipe = new Recipe(1L, "Name", 1, 1);
-//        Optional<Recipe> ofResult = Optional.<Recipe>of(recipe);
-//
-//        Recipe newRecipe = new Recipe();
-//        newRecipe.setCalories(100);
-//        newRecipe.setId(1L);
-//        newRecipe.setName("Test");
-//        newRecipe.setTimeInMinutes(5);
-//
-//        when(this.recipeRepository.save((Recipe) any())).thenReturn(newRecipe);
-//        when(this.recipeRepository.findById((Long) any())).thenReturn(ofResult);
-//        this.recipeService.updateRecipe(1L, new Recipe("Name", 1, 1));
-//        verify(this.recipeRepository).findById((Long) any());
-//        verify(this.recipeRepository).save((Recipe) any());
-//        assertTrue(this.recipeService.findAllRecipes().isEmpty());
-//    }
-
-    @Test
-    public void shouldThrowExceptionWhenIdToUpdateIsNotFound() {
-        Recipe recipe = new Recipe(1L, "Name", 1, 1);
-
-        when(this.recipeRepository.save((Recipe) any())).thenReturn(recipe);
-        when(this.recipeRepository.findById((Long) any())).thenReturn(Optional.<Recipe>empty());
-        assertThrows(RecordNotFoundException.class,
-                () -> this.recipeService.updateRecipe(1L, new Recipe("Name", 1, 1)));
-        verify(this.recipeRepository).findById((Long) any());
-    }
-
-//    @Test
 //    public void shouldUploadRecipePicture() throws IOException {
 //        Recipe recipe = new Recipe(1L, "Name", 1, 1);
 //        recipe.setComments(new ArrayList<Comment>());

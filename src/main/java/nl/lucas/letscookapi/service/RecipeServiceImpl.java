@@ -82,26 +82,6 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public void updateRecipe(Long id, Recipe updatedRecipe) {
-        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-
-        if (optionalRecipe.isPresent()) {
-            Recipe recipe = optionalRecipe.get();
-            checkUser(recipe);
-
-            recipe.setName(updatedRecipe.getName());
-            recipe.setCalories(updatedRecipe.getCalories());
-            recipe.setTimeInMinutes(updatedRecipe.getTimeInMinutes());
-            recipe.setIngredients(updatedRecipe.getIngredients());
-            recipe.setSteps(updatedRecipe.getSteps());
-            recipe.setEquipment(updatedRecipe.getEquipment());
-            recipeRepository.save(recipe);
-        } else {
-            throw new RecordNotFoundException();
-        }
-    }
-
-    @Override
     public void uploadImage(Long id, MultipartFile file) throws IOException {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 

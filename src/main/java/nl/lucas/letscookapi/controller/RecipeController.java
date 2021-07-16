@@ -61,13 +61,6 @@ public class RecipeController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("{recipeId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Object> updateRecipe(@PathVariable("recipeId") Long id, @RequestBody Recipe updatedRecipe) {
-        recipeService.updateRecipe(id, updatedRecipe);
-        return ResponseEntity.noContent().build();
-    }
-
     @PostMapping("{recipeId}/image")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Object> uploadImage(@PathVariable("recipeId") Long id, @RequestParam("file") MultipartFile file) throws IOException {

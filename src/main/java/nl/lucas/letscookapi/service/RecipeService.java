@@ -16,7 +16,6 @@ public interface RecipeService {
     Page<Recipe> findRecipesPerPage(Pageable pageable);
     void createRecipe(Recipe recipe);
     void deleteRecipe(Long id);
-    void updateRecipe(Long id, Recipe updatedRecipe);
     void uploadImage(Long id, MultipartFile file) throws IOException;
 
 }

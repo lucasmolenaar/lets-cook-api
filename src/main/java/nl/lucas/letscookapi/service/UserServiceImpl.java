@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         //standard authority
-        Authority standardAuthoritiy = new Authority(user.getUsername(), "ROLE_USER");
+        Authority standardAuthority = new Authority(user.getUsername(), "ROLE_USER");
         Set<Authority> standardAuthorities = new HashSet<>();
-        standardAuthorities.add(standardAuthoritiy);
+        standardAuthorities.add(standardAuthority);
 
         User newUser = new User();
         newUser.setUsername(user.getUsername());
